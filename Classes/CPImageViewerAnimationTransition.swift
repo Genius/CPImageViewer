@@ -22,7 +22,7 @@ public class CPImageViewerAnimationTransition: NSObject, UIViewControllerAnimate
         
         let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
         let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-        let containerView = transitionContext.containerView()!
+        let containerView = transitionContext.containerView()
         let style = transitionContext.presentationStyle()
         let finalFrame = transitionContext.finalFrameForViewController(toVC)
         

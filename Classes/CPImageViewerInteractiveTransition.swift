@@ -50,7 +50,7 @@ public class CPImageViewerInteractiveTransition: NSObject, UIViewControllerInter
         style = transitionContext.presentationStyle()
         
         toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        let containerView = transitionContext.containerView()!
+        let containerView = transitionContext.containerView()
         let finalFrame = transitionContext.finalFrameForViewController(toVC)
         
         // Solving the error of location of image view after rotating device and returning to previous controller. See ImageViewerViewController.init()

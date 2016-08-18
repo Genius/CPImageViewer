@@ -270,6 +270,7 @@
 				TargetAttributes = {
 					353941661CDDF47E0044FD7C = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					3539416F1CDDF47F0044FD7C = {
 						CreatedOnToolsVersion = 7.3;
@@ -421,6 +422,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zte.CPImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -445,6 +447,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zte.CPImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSION_INFO_PREFIX = "";
 			};
