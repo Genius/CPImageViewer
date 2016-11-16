@@ -29,7 +29,7 @@ extension UINavigationController : CPImageControllerProtocol {
         }
     }
     
-    private struct AssociatedKeys {
+    fileprivate struct AssociatedKeys {
         static var DescriptiveName = "cp_navigation_animationImageView"
     }
 }
@@ -47,7 +47,7 @@ extension UITabBarController : CPImageControllerProtocol {
         }
     }
     
-    private struct AssociatedKeys {
+    fileprivate struct AssociatedKeys {
         static var DescriptiveName = "cp_tabBar_animationImageView"
     }
 }

@@ -10,41 +10,41 @@ import UIKit
 
 public enum CPImageViewerStyle {
     /// Present style
-    case Presentation
+    case presentation
     
     /// Navigation style
-    case Push
+    case push
 }
 
-public class CPImageViewerViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, CPImageControllerProtocol {
+open class CPImageViewerViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, CPImageControllerProtocol {
     
     /// The animation imageView conforming to `CPImageControllerProtocol`
-    public var animationImageView: UIImageView!
+    open var animationImageView: UIImageView!
     
     /// The viewer style. Defaults to **Presentation**
-    public var viewerStyle = CPImageViewerStyle.Presentation
+    open var viewerStyle = CPImageViewerStyle.presentation
     
     /// The image of animation image view
-    public var image: UIImage?
+    open var image: UIImage?
     
     /// The title of *navigationItem.rightBarButtonItem* when viewerStyle is Push
-    public var rightBarItemTitle: String?
+    open var rightBarItemTitle: String?
     
     /// The image of *navigationItem.rightBarButtonItem* when viewerStyle is Push
-    public var rightBarItemImage: UIImage?
+    open var rightBarItemImage: UIImage?
     
     /// The action of *navigationItem.rightBarButtonItem* when viewerStyle is Push
-    public var rightAction: ((Void) -> (Void))?
+    open var rightAction: ((Void) -> (Void))?
     
-    private var scrollView: UIScrollView!
+    fileprivate var scrollView: UIScrollView!
     
-    private var isViewDidAppear = false
+    fileprivate var isViewDidAppear = false
     
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         //Solving the error of location of image view after rotating device and returning to previous controller.
-        self.modalPresentationStyle = .OverFullScreen
+        self.modalPresentationStyle = .overFullScreen
         self.modalPresentationCapturesStatusBarAppearance = true
     }
 
@@ -52,13 +52,13 @@ public class CPImageViewerViewController: UIViewController, UIScrollViewDelegate
         super.init(coder: aDecoder)
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         
         scrollView = UIScrollView()
-        scrollView.backgroundColor = UIColor.blackColor()
+        scrollView.backgroundColor = UIColor.black
         scrollView.maximumZoomScale = 5.0
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -66,50 +66,50 @@ public class CPImageViewerViewController: UIViewController, UIScrollViewDelegate
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(scrollView)
         
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[scrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scrollView" : scrollView]))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[scrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scrollView" : scrollView]))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[scrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scrollView" : scrollView]))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["scrollView" : scrollView]))
         
         animationImageView = UIImageView()
         animationImageView.image = image
         scrollView.addSubview(animationImageView)
         
-        if viewerStyle == .Presentation {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(CPImageViewerViewController.dismiss))
+        if viewerStyle == .presentation {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(CPImageViewerViewController.dismissImageViewer))
             scrollView.addGestureRecognizer(tap)
         } else if let title = rightBarItemTitle {
-            let rightItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: #selector(CPImageViewerViewController.rightBarItemAction))
+            let rightItem = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(CPImageViewerViewController.rightBarItemAction))
             self.navigationItem.rightBarButtonItem = rightItem
         } else if let image = rightBarItemImage {
-            let rightItem = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(CPImageViewerViewController.rightBarItemAction))
+            let rightItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(CPImageViewerViewController.rightBarItemAction))
             self.navigationItem.rightBarButtonItem = rightItem
         }
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         isViewDidAppear = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    public override func viewDidLayoutSubviews() {
+    open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         scrollView.zoomScale = 1.0
-        scrollView.contentInset = UIEdgeInsetsZero
+        scrollView.contentInset = UIEdgeInsets.zero
         animationImageView.frame = centerFrameForImageView()
     }
     
-    public override func prefersStatusBarHidden() -> Bool {
-        if viewerStyle == .Presentation && isViewDidAppear {
+    open override var prefersStatusBarHidden : Bool {
+        if viewerStyle == .presentation && isViewDidAppear {
             return true
         }
         
-        return super.prefersStatusBarHidden()
+        return super.prefersStatusBarHidden
     }
     
     //MARK: - Custom Methods
-    private func centerFrameForImageView() -> CGRect {
-        guard let aImage = image else { return CGRectZero }
+    fileprivate func centerFrameForImageView() -> CGRect {
+        guard let aImage = image else { return CGRect.zero }
         
         let viewWidth = scrollView.frame.size.width
         let viewHeight = scrollView.frame.size.height
@@ -118,10 +118,10 @@ public class CPImageViewerViewController: UIViewController, UIScrollViewDelegate
         let newWidth = min(viewWidth, CGFloat(floorf(Float(imageWidth * (viewHeight / imageHeight)))))
         let newHeight = min(viewHeight, CGFloat(floorf(Float(imageHeight * (viewWidth / imageWidth)))))
         
-        return CGRectMake((viewWidth - newWidth)/2, (viewHeight - newHeight)/2, newWidth, newHeight)
+        return CGRect(x: (viewWidth - newWidth)/2, y: (viewHeight - newHeight)/2, width: newWidth, height: newHeight)
     }
     
-    private func centerScrollViewContents() {
+    fileprivate func centerScrollViewContents() {
         let viewWidth = scrollView.frame.size.width
         let viewHeight = scrollView.frame.size.height
         let imageWidth = animationImageView.frame.size.width
@@ -129,27 +129,27 @@ public class CPImageViewerViewController: UIViewController, UIScrollViewDelegate
         
         let originX = max(0, (viewWidth - imageWidth)/2)
         let originY = max(0, (viewHeight - imageHeight)/2)
-        animationImageView.frame.origin = CGPointMake(originX, originY)
+        animationImageView.frame.origin = CGPoint(x: originX, y: originY)
     }
 
     //MARK: - Button Action
     @objc private func rightBarItemAction() {
-        self.navigationController!.popViewControllerAnimated(true)
+        self.navigationController!.popViewController(animated: true)
         if let block = rightAction {
             block()
         }
     }
     
-    @objc private func dismiss() {
-        dismissViewControllerAnimated(true, completion: nil)
+    @objc private func dismissImageViewer() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: - UIScrollViewDelegate
-    public func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return animationImageView
     }
     
-    public func scrollViewDidZoom(scrollView: UIScrollView) {
+    open func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerScrollViewContents()
     }
 }
