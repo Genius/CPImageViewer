@@ -16,12 +16,8 @@ open class CPImageViewerAnimator: NSObject, UINavigationControllerDelegate, UIVi
     //MARK: - UIViewControllerTransitioningDelegate
     open func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if source is CPImageControllerProtocol && presenting is CPImageControllerProtocol && presented is CPImageViewerViewController {
-            if let navi = presenting as? UINavigationController {
-                navi.animationImageView = (source as! CPImageControllerProtocol).animationImageView
-            } else if let tabBarVC = presenting as? UITabBarController {
-                tabBarVC.animationImageView = (source as! CPImageControllerProtocol).animationImageView
-            }
+        if var presenting = presenting as? CPImageControllerProtocol, source is CPImageControllerProtocol && presented is CPImageViewerViewController {
+            presenting.animationImageView = (source as! CPImageControllerProtocol).animationImageView
             
             interativeAnimator.wireToViewController(presented as! CPImageViewerViewController)
             interativeAnimator.isPresented = true
